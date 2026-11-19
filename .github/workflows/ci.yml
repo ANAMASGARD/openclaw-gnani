@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: '24.18.0'
           cache: npm
+      - name: Use the npm version that generated the lockfile
+        run: npm install --global --ignore-scripts npm@12.2.0
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: npm ci --ignore-scripts
       - run: npm run typecheck
