@@ -19,6 +19,8 @@ Verified on Fedora with Node 24.18.0, npm 12.2.0, OpenClaw 2026.11.5 (e13cf15), 
 | Full audit | 26 development dependency findings, 24 moderate and two high, with zero critical. The Vitest and Tinypool critical advisories from the baseline are absent. |
 | Real vendor tests | 12/12 primary model/transport cells passed. Presigned Batch was blocked by upstream HTTP 404. See the [matrix](COMPATIBILITY_MATRIX.md). |
 
+The CI lockfile was regenerated with npm 12.2.0 and standard peer dependency resolution. A clean `npm ci --ignore-scripts` reproduced the original `undici` mismatch with user npm configuration disabled and passed with the repaired lockfile. The project `.npmrc` keeps lockfile generation consistent with CI when a developer's npm configuration enables `legacy-peer-deps`.
+
 Live transcription used short [Google FLEURS](https://huggingface.co/datasets/google/fleurs) English and Hindi recordings (CC BY 4.0), plus a synthetic Hindi-English phrase from espeak-ng. The recordings and transcripts are excluded from the npm artifact. Both Prisma models also transcribed a human-recorded clip through the installed OpenClaw CLI using `openclaw infer audio transcribe --file … --model gnani/<model> --language en-IN --json`. OpenClaw returned the requested model and `gnani` provider with zero fallback attempts. The CLI also generated playable 24 kHz mono MP3 using `openclaw infer tts convert --provider gnani --text … --output … --json`. The live suite uses FFprobe to confirm sample rates, codecs, channels and durations, and verifies streaming completion from the server events. Both Timbre models also passed WAV, Ogg/Opus, PCM, µ-law and A-law checks. Live Prisma v3.0 Batch accepted a ZIP of the English sample and a public FLAC URL from the Google Cloud documentation. [Public FLAC fixture](https://docs.cloud.google.com/speech-to-text/docs/v1/transcribe-api)
 
 ```sh
@@ -54,7 +56,17 @@ GNANI_E2E_OPENCLAW_STATE="$e2e_state" GNANI_E2E_LIVE=1 \
   GNANI_E2E_AUDIO=./authorized-recording.wav GNANI_E2E_EXPECT='known phrase' npm run test:e2e
 ```
 
-Pass `GNANI_API_KEY` through the process environment. ClawHub authentication was unavailable in the verification environment. GitHub ownership was verified separately.
+Pass `GNANI_API_KEY` through the process environment.
+
+## Published v0.1.0 artifact
+
+ClawHub links [Gnani AI Speech v0.1.0](https://clawhub.ai/anamasgard/plugins/openclaw-plugin-gnani) to source commit [`610e4ab1`](https://github.com/ANAMASGARD/openclaw-gnani/commit/610e4ab14b7f8e1acac2f68153516b532da28328). The downloaded tarball matched both the original upload and a fresh build and pack from that commit byte for byte. All three had SHA-256 `60bf30e0e3e0e869e71c2876ea84ff18f5c20f62bce64072f462462c7a8d788d`.
+
+```sh
+npm exec -- clawhub package download openclaw-plugin-gnani --version 0.1.0 \
+  --output ./openclaw-plugin-gnani-0.1.0.tgz
+sha256sum ./openclaw-plugin-gnani-0.1.0.tgz
+```
 
 ## Publication checklist
 
@@ -79,4 +91,4 @@ npm exec -- clawhub package publish ./openclaw-plugin-gnani-0.1.0.tgz \
   --source-repo ANAMASGARD/openclaw-gnani --source-commit "$(git rev-parse HEAD)"
 ```
 
-The authenticated GitHub account was ANAMASGARD and had ADMIN access to the target repository. The ClawHub dry-run format was verified with the local artifact. No changes were uploaded. Omit `--dry-run` only after approval and after checking that the archive was built from the source commit provided to ClawHub.
+The authenticated GitHub account was ANAMASGARD and had ADMIN access to the target repository. The ClawHub dry run passed before v0.1.0 was published. For future releases, publish only after approval and after checking that the archive was built from the source commit provided to ClawHub.
