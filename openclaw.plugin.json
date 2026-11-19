@@ -1,0 +1,33 @@
+{
+  "id": "gnani",
+  "name": "Gnani AI Speech",
+  "description": "Add Gnani AI Speech models to OpenClaw.",
+  "version": "0.1.0",
+  "providers": [
+    "gnani"
+  ],
+  "setup": {
+    "providers": [
+      {
+        "id": "gnani",
+        "envVars": [
+          "GNANI_API_KEY"
+        ]
+      }
+    ]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "activation": {
+    "onStartup": true,
+    "providers": [
+      "gnani"
+    ],
+    "capabilities": [
+      "provider"
+    ]
+  }
+}

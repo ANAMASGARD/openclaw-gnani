@@ -1,0 +1,72 @@
+{
+  "name": "openclaw-plugin-gnani",
+  "version": "0.1.0",
+  "description": "OpenClaw provider plugin for Gnani AI Speech.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --config ./vitest.config.ts",
+    "validate": "npm run build && clawhub package validate . --out .clawhub-validation"
+  },
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "openclaw": ">=2026.11.5"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.2",
+    "clawhub": "latest",
+    "openclaw": "latest",
+    "typescript": "7.0.2",
+    "vitest": "^3.2.7"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.11.5"
+    },
+    "build": {
+      "openclawVersion": "2026.11.5"
+    },
+    "install": {
+      "clawhubSpec": "clawhub:openclaw-plugin-gnani",
+      "defaultChoice": "clawhub",
+      "minHostVersion": ">=2026.11.5"
+    },
+    "release": {
+      "publishToClawHub": true
+    }
+  },
+  "pluginInspector": {
+    "version": 1,
+    "plugin": {
+      "id": "gnani",
+      "priority": "high",
+      "seams": [
+        "plugin-runtime"
+      ],
+      "sourceRoot": ".",
+      "expect": {
+        "registrations": [
+          "registerProvider"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "ws": "^8.23.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}
