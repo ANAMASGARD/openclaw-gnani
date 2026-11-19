@@ -1,33 +1,20 @@
 {
   "id": "gnani",
   "name": "Gnani AI Speech",
-  "description": "Add Gnani AI Speech models to OpenClaw.",
+  "description": "Prisma transcription and Timbre speech synthesis for OpenClaw.",
   "version": "0.1.0",
-  "providers": [
-    "gnani"
-  ],
+  "categories": ["voice"],
+  "activation": { "onStartup": true },
   "setup": {
-    "providers": [
-      {
-        "id": "gnani",
-        "envVars": [
-          "GNANI_API_KEY"
-        ]
-      }
-    ]
+    "providers": [{ "id": "gnani", "envVars": ["GNANI_API_KEY"] }]
   },
-  "configSchema": {
-    "type": "object",
-    "additionalProperties": false,
-    "properties": {}
+  "contracts": {
+    "mediaUnderstandingProviders": ["gnani"],
+    "realtimeTranscriptionProviders": ["gnani"],
+    "speechProviders": ["gnani"]
   },
-  "activation": {
-    "onStartup": true,
-    "providers": [
-      "gnani"
-    ],
-    "capabilities": [
-      "provider"
-    ]
-  }
+  "mediaUnderstandingProviderMetadata": {
+    "gnani": { "capabilities": ["audio"], "defaultModels": { "audio": "prisma-v3.0" } }
+  },
+  "configSchema": { "type": "object", "additionalProperties": false, "properties": {} }
 }

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.18.0'
+          cache: npm
+      - name: Use the npm version that generated the lockfile
+        run: npm install --global --ignore-scripts npm@12.2.0
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run validate
+      - run: npm run lint
+      - run: npm audit --omit=dev --audit-level=critical
+      - run: npm pack --dry-run

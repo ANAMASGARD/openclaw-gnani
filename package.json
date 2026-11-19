@@ -6,15 +6,22 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --config ./vitest.config.ts",
-    "validate": "npm run build && clawhub package validate . --out .clawhub-validation"
+    "validate": "npm run build && clawhub package validate . --out .clawhub-validation",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "openclaw plugins lint --root .",
+    "test:live": "npm run build && node tests/live.mjs",
+    "test:e2e": "node tests/gateway.mjs"
   },
   "files": [
     "dist",
     "openclaw.plugin.json",
-    "README.md"
+    "README.md",
+    "docs",
+    "examples",
+    "LICENSE"
   ],
   "peerDependencies": {
-    "openclaw": ">=2026.11.5"
+    "openclaw": "2026.11.5"
   },
   "peerDependenciesMeta": {
     "openclaw": {
@@ -23,17 +30,18 @@
   },
   "devDependencies": {
     "@types/ws": "^8.18.2",
-    "clawhub": "latest",
-    "openclaw": "latest",
+    "clawhub": "0.26.0",
+    "openclaw": "2026.11.5",
     "typescript": "7.0.2",
-    "vitest": "^3.2.7"
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
   },
   "openclaw": {
     "extensions": [
       "./dist/index.js"
     ],
     "compat": {
-      "pluginApi": ">=2026.11.5"
+      "pluginApi": "2026.11.5"
     },
     "build": {
       "openclawVersion": "2026.11.5"
@@ -58,7 +66,9 @@
       "sourceRoot": ".",
       "expect": {
         "registrations": [
-          "registerProvider"
+          "registerMediaUnderstandingProvider",
+          "registerRealtimeTranscriptionProvider",
+          "registerSpeechProvider"
         ]
       }
     }
@@ -68,5 +78,23 @@
   },
   "allowScripts": {
     "esbuild@0.28.2": true
+  },
+  "engines": {
+    "node": ">=24.16.0 <25 || >=26.1.0"
+  },
+  "license": "MIT",
+  "exports": {
+    "./batch": {
+      "types": "./dist/stt/batch.d.ts",
+      "default": "./dist/stt/batch.js"
+    },
+    "./tts-websocket": {
+      "types": "./dist/tts/websocket.d.ts",
+      "default": "./dist/tts/websocket.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANAMASGARD/openclaw-gnani.git"
   }
 }
