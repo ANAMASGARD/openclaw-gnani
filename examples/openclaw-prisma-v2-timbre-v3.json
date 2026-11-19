@@ -1,0 +1,41 @@
+{
+  "plugins": {
+    "allow": [
+      "gnani"
+    ],
+    "entries": {
+      "gnani": {
+        "enabled": true
+      }
+    }
+  },
+  "tools": {
+    "media": {
+      "audio": {
+        "enabled": true,
+        "language": "en-IN"
+      },
+      "models": [
+        {
+          "provider": "gnani",
+          "model": "prisma-v2.5",
+          "capabilities": [
+            "audio"
+          ]
+        }
+      ]
+    }
+  },
+  "tts": {
+    "auto": "inbound",
+    "provider": "gnani",
+    "providers": {
+      "gnani": {
+        "modelId": "timbre-v3.0",
+        "speakerVoice": "Shivani",
+        "language": "auto",
+        "streamTransport": "websocket"
+      }
+    }
+  }
+}
